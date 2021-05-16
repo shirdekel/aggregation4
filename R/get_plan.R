@@ -14,10 +14,10 @@ get_plan <- function() {
     gambles = target(
       shirthesis::get_gambles(
         restricted_values,
-        10
+        20
       ),
       ## Seed needed to recreate old target with different name. Generated from
-      ## `diagnose(restricted_values)$gambles` in the original thesis project.
+      ## `diagnose(gambles)$seed` in the original thesis project.
       seed = 336030447
     ),
     experiment_resources = target(
@@ -30,11 +30,14 @@ get_plan <- function() {
       plot_gambles(
         gambles,
         experiment_resources,
-        experiment_number = 3
+        experiment_number = 4
       )
     ),
     main = target(
-      get_main(gambles)
+      get_main(gambles),
+      ## Seed needed to recreate old target with different name. Generated from
+      ## `diagnose(experiment4)$seed` in the original thesis project.
+      seed = 1827196820
     ),
     experiment = target(
       {
