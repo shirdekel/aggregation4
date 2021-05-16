@@ -1,0 +1,82 @@
+---
+title: Clean aggregation 4 data
+author: Shir Dekel
+date: '`r format(Sys.time())`'
+output_format: html_document
+---
+
+Load packages and functions
+
+```{r}
+source(DataPackageR::project_path("packages.R"))
+project_path("R") %>%
+  list.files(full.names = TRUE) %>%
+  lapply(source)
+```
+
+Clean data
+
+```{r}
+data_raw_filtered <-
+  project_extdata_path("JSPsychData15-01-2021 12 39.csv") %>%
+  shirthesis::import_from_prolific_raw_data(
+    experiment_number = 4,
+    thesis_project = "aggregation"
+  )
+
+data_raw_prep <-
+  data_raw_filtered %>%
+  shirthesis::column_fromJSON(c(stage)) %>%
+  select(
+    stage,
+    time_elapsed,
+    dateCreated,
+    subject,
+    experiment,
+    sample,
+    similarity,
+    awareness,
+    presentation,
+    distribution,
+    button_pressed,
+    responses,
+    question_order,
+    thesis_project
+  )
+
+data_combined <-
+  tibble()
+
+names_to <-
+  c(
+    "project", "detail", "outcome_positive", "outcome_dif",
+    "probability_positive"
+  )
+
+data_combined <-
+  data_raw_prep %>%
+  shirthesis::clean_data_separate(names_to) %>%
+  bind_rows(data_combined)
+
+data_combined <-
+  data_raw_prep %>%
+  shirthesis::clean_data_other("project_choice") %>%
+  inner_join(data_combined, by = "subject")
+
+data_combined <-
+  data_raw_prep %>%
+  shirthesis::clean_data_portfolio_binary() %>%
+  inner_join(data_combined, by = "subject")
+
+data <-
+  data_combined %>%
+  shirthesis::clean_data_combined() %>%
+  clean_data_finalise(
+    test = FALSE,
+    prolific_filter = NULL,
+    prolific_filter_label = NULL
+  ) %>%
+  ## Remove non-essential information
+  select(-c(contact, address, prolific, company_name))
+```
+
