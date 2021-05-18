@@ -42,7 +42,6 @@ get_plan <- function() {
     experiment = target(
       {
         shirthesis::get_experiment(
-          gambles,
           experiment_directory = file.path("inst", "jspsych"),
           experiment_resources,
           main,
