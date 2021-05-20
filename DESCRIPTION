@@ -19,3 +19,5 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://github.com/shirdekel/aggregation4
+BugReports: https://github.com/shirdekel/aggregation4/issues
