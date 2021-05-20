@@ -1,10 +1,10 @@
 #' aggregation4
-#' A data package for aggregation4.
+#' A data package for the Aggregation 4 experiment.
 #' @docType package
 #' @aliases aggregation4-package
-#' @title Package Title
+#' @title Aggregation 4 experiment
 #' @name aggregation4
-#' @description A description of the data package
+#' @description Data, materials, and experiment code for the Aggregation 4 experiment.
 #' @details Use \code{data(package='aggregation4')$results[, 3]} to see a list of available data sets in this data package
 #'     and/or DataPackageR::load_all
 #' _datasets() to load them.
