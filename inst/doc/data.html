@@ -166,16 +166,17 @@ pre code {
 
 <h1 class="title toc-ignore">Clean aggregation 4 data</h1>
 <h4 class="author">Shir Dekel</h4>
-<h4 class="date">2021-05-18 17:32:27</h4>
+<h4 class="date">2021-05-20 11:15:16</h4>
 
 </div>
 
 
 <p>Load packages and functions</p>
 <pre class="r"><code>source(DataPackageR::project_path(&quot;packages.R&quot;))</code></pre>
-<pre><code>## [conflicted] Removing existing preference</code></pre>
+<pre><code>## • {drake} is superseded: https://books.ropensci.org/targets/drake.html
+## • Consider {targets} instead: https://docs.ropensci.org/targets/
+## • Effective 2021-01-21</code></pre>
 <pre><code>## [conflicted] Will prefer dplyr::filter over any other package</code></pre>
-<pre><code>## [conflicted] Removing existing preference</code></pre>
 <pre><code>## [conflicted] Will prefer purrr::flatten over any other package</code></pre>
 <pre class="r"><code>project_path(&quot;R&quot;) %&gt;%
   list.files(full.names = TRUE) %&gt;%
@@ -479,7 +480,24 @@ pre code {
 ##       },
 ##       target = &quot;file&quot;
 ##     ),
-##     materials = get_screenshots(experiment)
+##     main_testing = get_main(gambles, randomize_order = FALSE),
+##     experiment_testing = target(
+##       {
+##         shirthesis::get_experiment(
+##           experiment_directory = file.path(&quot;inst&quot;, &quot;jspsych&quot;, &quot;testing&quot;),
+##           experiment_resources,
+##           main_testing,
+##           post_experiment = get_post_experiment(),
+##           columns = get_columns(),
+##           condition_allocation = get_condition_allocation(),
+##           ethics = FALSE,
+##           on_finish = NULL
+##         )
+##         file.path(&quot;inst&quot;, &quot;jspsych&quot;, &quot;testing&quot;, &quot;experiment&quot;)
+##       },
+##       target = &quot;file&quot;
+##     ),
+##     materials = get_screenshots(experiment_testing)
 ##   )
 ## }
 ## 
@@ -1473,9 +1491,10 @@ pre code {
   shirthesis::import_from_prolific_raw_data(
     experiment_number = 4,
     thesis_project = &quot;aggregation&quot;
-  )
-
-data_raw_prep &lt;-
+  )</code></pre>
+<pre><code>## Warning: Duplicated column names deduplicated: &#39;id&#39; =&gt; &#39;id_1&#39; [5], &#39;id&#39; =&gt;
+## &#39;id_2&#39; [12]</code></pre>
+<pre class="r"><code>data_raw_prep &lt;-
   data_raw_filtered %&gt;%
   shirthesis::column_fromJSON(c(stage)) %&gt;%
   select(
